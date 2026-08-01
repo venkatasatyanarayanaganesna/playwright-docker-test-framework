@@ -1,0 +1,17 @@
+services:
+  tests:
+    build: .
+    container_name: playwright-tests
+    # Mount report/result folders out to the host so you can view the
+    # HTML report and traces after the container exits, without needing
+    # to copy files out of the container manually.
+    volumes:
+      - ./playwright-report:/app/playwright-report
+      - ./test-results:/app/test-results
+      - ./allure-results:/app/allure-results
+    environment:
+      - CI=true
+    # Default: run UI + API tests on chromium (fast, reliable in CI-like
+    # environments). Override with `docker compose run tests <command>`
+    # for anything else — see README.
+    command: npx playwright test tests/ui tests/api --project=chromium --project=api

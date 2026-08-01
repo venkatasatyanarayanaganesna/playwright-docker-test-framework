@@ -1,0 +1,28 @@
+name: Playwright Tests (Docker)
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  test-in-docker:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build the test image
+        run: docker compose build
+
+      - name: Run tests inside the container
+        run: docker compose run --rm tests
+
+      - name: Upload HTML report
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: playwright-report-docker
+          path: playwright-report/
+          retention-days: 14
