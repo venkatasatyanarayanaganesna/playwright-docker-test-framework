@@ -9,9 +9,10 @@ test.describe('Cart and checkout flow', () => {
   }) => {
     await authenticatedPage.addToCartByName(PRODUCTS.BACKPACK);
     await authenticatedPage.addToCartByName(PRODUCTS.BIKE_LIGHT);
+    await expect(authenticatedPage.page.locator('.shopping_cart_badge')).toHaveText('2');
     await authenticatedPage.goToCart();
 
-    expect(await cartPage.getItemCount()).toBe(2);
+    await expect(cartPage.page.locator('.cart_item')).toHaveCount(2);
 
     await cartPage.goToCheckout();
     await checkoutPage.fillShippingInfo(SHIPPING_INFO);

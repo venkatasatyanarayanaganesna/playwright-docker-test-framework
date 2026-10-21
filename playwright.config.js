@@ -8,9 +8,9 @@ require('dotenv').config();
  */
 module.exports = defineConfig({
   testDir: './tests',
-  timeout: 30 * 1000,
+  timeout: 60 * 1000,
   expect: {
-    timeout: 5000,
+    timeout: 10000,
     toHaveScreenshot: { maxDiffPixelRatio: 0.02 },
   },
 
@@ -20,8 +20,8 @@ module.exports = defineConfig({
   // Retry flaky tests automatically on CI, not locally.
   retries: process.env.CI ? 2 : 0,
 
-  // Parallel workers: fewer on CI to keep it stable, more locally for speed.
-  workers: process.env.CI ? 2 : undefined,
+  // Parallel workers: capped at 2 everywhere; more workers overload saucedemo.com and cause timeouts.
+  workers: 2,
   fullyParallel: true,
 
   reporter: [
